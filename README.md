@@ -199,9 +199,17 @@ An array of nodes for clustering.
 
 Value to set for `cluster_partition_handling` RabbitMQ configuration variable.
 
+####`collect_statistics_interval`
+
+Integer, set the collect_statistics_interval in rabbitmq.config
+
 ####`config`
 
 The file to use as the rabbitmq.config template.
+
+####`config_additional_variables`
+
+String, dditional config variables in rabbitmq.config
 
 ####`config_cluster`
 
@@ -324,6 +332,10 @@ Boolean, set to true to log LDAP auth.
 ####`manage_repos`
 
 Boolean, whether or not to manage package repositories.
+
+####`management_hostname`
+
+The hostname for the RabbitMQ management interface.
 
 ####`management_port`
 
@@ -455,9 +467,21 @@ Requires setting ssl_stomp_port also.
 
 Boolean to install the stomp plugin.
 
+####`tcp_backlog`
+
+Integer, the size of the backlog on TCP connections.
+
 ####`tcp_keepalive`
 
 Boolean to enable TCP connection keepalive for RabbitMQ service.
+
+####`tcp_recbuf`
+
+Integer, corresponds to recbuf in RabbitMQ `tcp_listen_options`
+
+####`tcp_sndbuf`
+
+Integer, corresponds to sndbuf in RabbitMQ `tcp_listen_options`
 
 ####`version`
 
