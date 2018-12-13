@@ -1,15 +1,16 @@
 # requires
 #   puppetlabs-apt
 #   puppetlabs-stdlib
+#
+# @api private
 class rabbitmq::repo::apt(
-  $location     = 'http://www.rabbitmq.com/debian/',
-  $release      = 'testing',
-  $repos        = 'main',
-  $include_src  = false,
-  $key          = '0A9AF2115F4687BD29803A206B73A36E6026DFCA',
-  $key_source   = 'https://www.rabbitmq.com/rabbitmq-release-signing-key.asc',
-  $key_content  = undef,
-  $architecture = undef,
+  String $location               = 'https://packagecloud.io/rabbitmq/rabbitmq-server',
+  String $repos                  = 'main',
+  Boolean $include_src           = false,
+  String $key                    = '8C695B0219AFDEB04A058ED8F4E789204D206F89',
+  String $key_source             = $rabbitmq::package_gpg_key,
+  Optional[String] $key_content  = $rabbitmq::key_content,
+  Optional[String] $architecture = undef,
   ) {
 
   $pin = $rabbitmq::package_apt_pin
@@ -17,31 +18,26 @@ class rabbitmq::repo::apt(
   # ordering / ensure to get the last version of repository
   Class['rabbitmq::repo::apt']
   -> Class['apt::update']
-  -> Package<| title == 'rabbitmq-server' |>
 
-  $ensure_source = $rabbitmq::repos_ensure ? {
-    false   => 'absent',
-    default => 'present',
-  }
-
+  $osname = downcase($facts['os']['name'])
   apt::source { 'rabbitmq':
-    ensure       => $ensure_source,
-    location     => $location,
-    release      => $release,
+    ensure       => present,
+    location     => "${location}/${osname}",
     repos        => $repos,
-    include_src  => $include_src,
-    key          => $key,
-    key_source   => $key_source,
-    key_content  => $key_content,
+    include      => { 'src' => $include_src },
+    key          => {
+      'id'      => $key,
+      'source'  => $key_source,
+      'content' => $key_content,
+    },
     architecture => $architecture,
   }
 
-  if $pin != '' {
-    validate_re($pin, '\d{1,4}')
+  if $pin {
     apt::pin { 'rabbitmq':
       packages => '*',
       priority => $pin,
-      origin   => 'www.rabbitmq.com',
+      origin   => 'packagecloud.io',
     }
   }
 }
