@@ -4,8 +4,9 @@
 #
 # @api private
 class rabbitmq::repo::apt(
-  String $location               = 'https://packagecloud.io/rabbitmq/rabbitmq-server',
+  String $location               = 'https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/',
   String $repos                  = 'main',
+  String $release                = 'trusty',
   Boolean $include_src           = false,
   String $key                    = '8C695B0219AFDEB04A058ED8F4E789204D206F89',
   String $key_source             = $rabbitmq::package_gpg_key,
@@ -24,6 +25,7 @@ class rabbitmq::repo::apt(
     ensure       => present,
     location     => "${location}/${osname}",
     repos        => $repos,
+    release      => $release,
     include      => { 'src' => $include_src },
     key          => {
       'id'      => $key,
