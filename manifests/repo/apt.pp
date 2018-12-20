@@ -30,9 +30,9 @@ class rabbitmq::repo::apt(
     include_src  => $include_src,
     architecture => $architecture,
   }->
-  exec {'Add  RabbitMQ Packagecloud Key Repo'
+  exec {'Add  RabbitMQ Packagecloud Key Repo':
     cmd => "/usr/bin/curl -L '${gpg_key_url}' 2> /dev/null | apt-key add - &>/dev/null",
-    unless => "/usr/bin/apt-key list 2> /dev/null | /bin/grep -q -w 'https://packagecloud.io/rabbitmq/rabbitmq-server'"
+    unless => "/usr/bin/apt-key list 2> /dev/null | /bin/grep -q -w 'https://packagecloud.io/rabbitmq/rabbitmq-server'",
   }
 
   if $pin != '' {
