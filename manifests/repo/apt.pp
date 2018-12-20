@@ -2,7 +2,7 @@
 #   puppetlabs-apt
 #   puppetlabs-stdlib
 class rabbitmq::repo::apt(
-  $gpg_key_url  = "https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey",
+  $gpg_key_url,
   $location     = 'https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/',
   $release      = 'trusty',
   $repos        = 'main',
