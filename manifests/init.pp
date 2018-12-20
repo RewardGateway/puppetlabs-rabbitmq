@@ -228,7 +228,7 @@ class rabbitmq(
       }
       'Debian': {
         class { '::rabbitmq::repo::apt' :
-          $gpg_key_url => "https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey",
+          $gpg_key_url = "https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey",
         }
         $package_require = Class['apt::update']
       }
