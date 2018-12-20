@@ -227,10 +227,8 @@ class rabbitmq(
           $package_require = undef
       }
       'Debian': {
-        class { '::rabbitmq::repo::apt' :
-            gpg_key_url => "https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey",
-        }
-        $package_require = Class['apt::update']
+          include '::rabbitmq::repo::apt'
+          $package_require = Class['apt::update']
       }
       default: {
         $package_require = undef

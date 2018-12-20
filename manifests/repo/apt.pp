@@ -2,7 +2,7 @@
 #   puppetlabs-apt
 #   puppetlabs-stdlib
 class rabbitmq::repo::apt(
-  $gpg_key_url,
+  $gpg_key_url  = 'https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey',
   $location     = 'https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/',
   $release      = 'trusty',
   $repos        = 'main',
@@ -31,8 +31,8 @@ class rabbitmq::repo::apt(
     architecture => $architecture,
   }->
   exec {'Add  RabbitMQ Packagecloud Key Repo':
-    cmd => "/usr/bin/curl -L ${gpg_key_url} 2> /dev/null | apt-key add - &>/dev/null",
-    unless => "/usr/bin/apt-key list 2> /dev/null | /bin/grep -q -w 'https://packagecloud.io/rabbitmq/rabbitmq-server'",
+    command => "/usr/bin/curl -L ${gpg_key_url} 2> /dev/null | apt-key add - &>/dev/null",
+    unless  => "/usr/bin/apt-key list 2> /dev/null | /bin/grep -q -w 'https://packagecloud.io/rabbitmq/rabbitmq-server'",
   }
 
   if $pin != '' {
