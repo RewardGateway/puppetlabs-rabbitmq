@@ -2,13 +2,11 @@
 #   puppetlabs-apt
 #   puppetlabs-stdlib
 class rabbitmq::repo::apt(
-  $location     = 'http://www.rabbitmq.com/debian/',
-  $release      = 'testing',
+  $gpg_key_url  = "https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey"
+  $location     = 'https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/',
+  $release      = 'trusty',
   $repos        = 'main',
   $include_src  = false,
-  $key          = '0A9AF2115F4687BD29803A206B73A36E6026DFCA',
-  $key_source   = 'https://www.rabbitmq.com/rabbitmq-release-signing-key.asc',
-  $key_content  = undef,
   $architecture = undef,
   ) {
 
@@ -30,10 +28,11 @@ class rabbitmq::repo::apt(
     release      => $release,
     repos        => $repos,
     include_src  => $include_src,
-    key          => $key,
-    key_source   => $key_source,
-    key_content  => $key_content,
     architecture => $architecture,
+  }->
+  exec {'Add  RabbitMQ Packagecloud Key Repo'
+    cmd => "/usr/bin/curl -L '${gpg_key_url}' 2> /dev/null | apt-key add - &>/dev/null",
+    unless => "/usr/bin/apt-key list 2> /dev/null | /bin/grep -q -w 'https://packagecloud.io/rabbitmq/rabbitmq-server'"
   }
 
   if $pin != '' {
